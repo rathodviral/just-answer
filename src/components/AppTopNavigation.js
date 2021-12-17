@@ -13,10 +13,10 @@ import { useHistory } from "react-router-dom";
 import { AppConstant, AppStorage } from "../utils";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  navigation: {
     flexGrow: 1,
   },
-  title: {
+  navigationTitle: {
     flexGrow: 1,
     textTransform: "capitalize",
   },
@@ -67,10 +67,10 @@ export default function AppTopNavigation() {
   );
 
   return (
-    <div className={classes.root}>
+    <div className={classes.navigation}>
       <AppBar position="fixed">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.navigationTitle}>
             {`Hello, ${authData && authData.email}`}
           </Typography>
           <IconButton

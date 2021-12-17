@@ -14,10 +14,6 @@ const useStyles = makeStyles({
   root: {
     display: "flex",
     justifyContent: "center",
-    alignContent: "center",
-    alignItems: "center",
-    height: "100vh",
-    flexDirection: "column",
   },
 });
 

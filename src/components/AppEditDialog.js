@@ -38,13 +38,15 @@ export default function AppEditDialog(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { page } = useSelector(userListPageDetail);
-  const { showAlertDialog, showSnackbar } = useContext(AppContext);
+  const { showAlertDialog, showSnackbar, isSmallScreen } =
+    useContext(AppContext);
   const { dialogStatus, toggleDialog, selectedItem } = props;
   const { fields, title, buttonLabel } = AppConstant.user;
   const editTitle = selectedItem ? `${title} ${selectedItem.first_name}` : "";
 
   const showSpinner = useSelector(showLoader);
   const [formFields, setFormFields] = useState(null);
+  const [dialogProps, setDialogProps] = useState(null);
 
   useEffect(() => {
     if (selectedItem) {
@@ -57,6 +59,20 @@ export default function AppEditDialog(props) {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedItem]);
+
+  useEffect(() => {
+    const defaultDialogProps = {
+      open: dialogStatus,
+      onClose: (e) => toggleDialog(false),
+      TransitionComponent: Transition,
+    };
+    if (isSmallScreen) {
+      setDialogProps({ ...defaultDialogProps, fullScreen: true });
+    } else {
+      setDialogProps(defaultDialogProps);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSmallScreen, dialogStatus]);
 
   const alertDeleteListItem = () => {
     const obj = {
@@ -105,44 +121,41 @@ export default function AppEditDialog(props) {
   };
 
   return (
-    <Dialog
-      fullScreen
-      open={dialogStatus}
-      onClose={(e) => toggleDialog(false)}
-      TransitionComponent={Transition}
-    >
-      <AppBar className={classes.appBar}>
-        <Toolbar>
-          <IconButton
-            edge="start"
-            color="inherit"
-            onClick={(e) => toggleDialog(false)}
-            aria-label="close"
-          >
-            <CloseIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title} noWrap={true}>
-            {editTitle}
-          </Typography>
-          <IconButton
-            className={classes.saveButton}
-            edge="start"
-            color="inherit"
-            onClick={(e) => alertDeleteListItem()}
-            aria-label="delete"
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <div style={{ padding: "1rem" }}>
-        <AppForm
-          fields={formFields}
-          buttonLabel={buttonLabel}
-          formSubmit={formSubmit}
-        ></AppForm>
-      </div>
-      {showSpinner && <AppSpinner />}
-    </Dialog>
+    dialogProps && (
+      <Dialog {...dialogProps}>
+        <AppBar className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              onClick={(e) => toggleDialog(false)}
+              aria-label="close"
+            >
+              <CloseIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title} noWrap={true}>
+              {editTitle}
+            </Typography>
+            <IconButton
+              className={classes.saveButton}
+              edge="start"
+              color="inherit"
+              onClick={(e) => alertDeleteListItem()}
+              aria-label="delete"
+            >
+              <DeleteIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <div style={{ padding: "1rem" }}>
+          <AppForm
+            fields={formFields}
+            buttonLabel={buttonLabel}
+            formSubmit={formSubmit}
+          ></AppForm>
+        </div>
+        {showSpinner && <AppSpinner />}
+      </Dialog>
+    )
   );
 }

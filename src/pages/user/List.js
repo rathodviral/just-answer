@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import {
   Card,
+  CardActionArea,
   CardContent,
   CardMedia,
   Grid,
@@ -91,31 +92,33 @@ export default function UserList(props) {
           ></AppEditDialog>
         </AppCard>
       ) : (
-        <Grid container spacing={2} className={classes.paginationWrap}>
+        <Grid container spacing={3} className={classes.paginationWrap}>
           {list.map((userData, i) => {
-            const { first_name, last_name, avatar, email } = userData;
+            const { first_name, last_name, avatar, email, id } = userData;
             return (
-              <Grid item xs={2} key={i}>
+              <Grid item lg={2} md={3} key={i}>
                 <Card>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={avatar}
-                    alt={email}
-                  />
-                  <CardContent>
-                    <Typography
-                      noWrap
-                      gutterBottom
-                      variant="h6"
-                      component="div"
-                    >
-                      {`${first_name} ${last_name}`}
-                    </Typography>
-                    <Typography noWrap variant="body2">
-                      {email}
-                    </Typography>
-                  </CardContent>
+                  <CardActionArea onClick={() => showEditItemDialog(id)}>
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={avatar}
+                      alt={email}
+                    />
+                    <CardContent>
+                      <Typography
+                        noWrap
+                        gutterBottom
+                        variant="h6"
+                        component="div"
+                      >
+                        {`${first_name} ${last_name}`}
+                      </Typography>
+                      <Typography noWrap variant="body2">
+                        {email}
+                      </Typography>
+                    </CardContent>
+                  </CardActionArea>
                 </Card>
               </Grid>
             );
