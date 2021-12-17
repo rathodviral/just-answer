@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import { AppCard, AppForm } from "../components";
 import { AppConstant, AppStorage } from "../utils";
@@ -11,6 +11,7 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "center",
     alignContent: "center",
+    alignItems: "center",
     height: "100vh",
     flexDirection: "column",
   },
@@ -28,13 +29,17 @@ export default function Login() {
     ? AppConstant.register
     : AppConstant.login;
 
+  const [formFields, setFormFields] = useState(null);
+
   useEffect(() => {
-    const { token } = AppStorage.getItemFromStorage(storage);
-    if (token) {
+    const authData = AppStorage.getItemFromStorage(storage);
+    if (authData && authData.token) {
       history.replace({ pathname: "/user" });
+      return;
     }
+    setFormFields(fields);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fields]);
 
   const formSubmit = async (formValue) => {
     try {
@@ -43,10 +48,13 @@ export default function Login() {
         : await authApi.login(formValue);
       const { status, data, message } = response;
       if (status) {
-        AppStorage.setItemInStorage(storage, data);
+        AppStorage.setItemInStorage(storage, {
+          ...data,
+          email: formValue.email,
+        });
         history.replace({ pathname: "/user" });
       } else {
-        // setLoginFields(fields);
+        setFormFields(fields);
         throw message;
       }
     } catch (error) {
@@ -57,9 +65,9 @@ export default function Login() {
   return (
     <div className={classes.root}>
       <AppCard title={title} bottomNote={bottomNote}>
-        {fields && (
+        {formFields && (
           <AppForm
-            fields={fields}
+            fields={formFields}
             buttonLabel={buttonLabel}
             formSubmit={formSubmit}
           ></AppForm>

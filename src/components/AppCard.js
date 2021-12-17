@@ -9,6 +9,8 @@ const useStyles = makeStyles({
   },
   card: {
     marginTop: "1rem",
+    maxWidth: 400,
+    minWidth: 360,
   },
   title: {
     fontSize: "1.5rem",

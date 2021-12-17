@@ -1,15 +1,24 @@
+import { AppStorage } from ".";
+
 export const sortByName = (a, b) =>
   a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
 
 export const isFalsyValue = (value) =>
   value === null || value === undefined || value === "";
 
-const displayErrorOnField = (fieldObject) => {
+export const setValidField = (fieldObject) => {
+  return {
+    ...fieldObject,
+    helperText: `Entered value is valid for ${fieldObject.label}.`,
+  };
+};
+
+export const setInvalidField = (fieldObject) => {
   return {
     ...fieldObject,
     isError: true,
     label: "Error",
-    helperText: `Enter ${fieldObject.label}, it's required field`,
+    helperText: `Enter ${fieldObject.label}, it's required field.`,
   };
 };
 
@@ -19,8 +28,8 @@ export const getErrorFields = (sourceFields) => {
     const field = sourceFields[item];
     fields[item] =
       isFalsyValue(field.value) && field.isRequired
-        ? displayErrorOnField(field)
-        : field;
+        ? setInvalidField(field)
+        : setValidField(field);
   });
 
   return fields;
@@ -37,3 +46,5 @@ export const getFormValue = (sourceFields) => {
   });
   return data;
 };
+
+export const getAuthData = (storage) => AppStorage.getItemFromStorage(storage);

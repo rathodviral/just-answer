@@ -29,8 +29,8 @@ export const userSlice = createSlice({
       state.total = total;
       state.status = "succeeded";
     },
-    startLoader: (state, action) => {
-      state.status = "loading";
+    toggleLoader: (state, action) => {
+      state.status = action.payload ? "loading" : "succeeded";
     },
   },
   extraReducers(builder) {
@@ -67,6 +67,6 @@ export const userListPageDetail = (state) => {
   };
 };
 
-export const { updateAfterPagination, startLoader } = userSlice.actions;
+export const { updateAfterPagination, toggleLoader } = userSlice.actions;
 
 export default userSlice.reducer;

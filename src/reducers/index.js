@@ -4,6 +4,6 @@ export {
   showLoader,
   userListPageDetail,
   updateAfterPagination,
-  startLoader,
+  toggleLoader,
 } from "./user";
 export { default as userReducer } from "./user";

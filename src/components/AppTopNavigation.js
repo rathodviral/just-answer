@@ -25,7 +25,9 @@ const useStyles = makeStyles((theme) => ({
 export default function AppTopNavigation() {
   const classes = useStyles();
   const history = useHistory();
+  const { login } = AppConstant;
   const [anchorEl, setAnchorEl] = useState(false);
+  const authData = AppStorage.getItemFromStorage(login.storage);
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -37,10 +39,15 @@ export default function AppTopNavigation() {
   };
 
   const handleLogoutClick = (event) => {
-    const { login } = AppConstant;
     AppStorage.removeItemFromStorage(login.storage);
     history.replace({ pathname: "/" });
   };
+
+  const menuItem = [
+    { name: "Dashboard", path: "/user/" },
+    { name: "List", path: "/user/list" },
+    { name: "Add user", path: "/user/add" },
+  ];
 
   const renderMenu = (
     <Menu
@@ -50,6 +57,11 @@ export default function AppTopNavigation() {
       open={Boolean(anchorEl)}
       onClose={handleMenuClose}
     >
+      {menuItem.map((item, i) => (
+        <MenuItem key={i} onClick={(e) => handleMenuClose(item.path)}>
+          {item.name}
+        </MenuItem>
+      ))}
       <MenuItem onClick={handleLogoutClick}>Logout</MenuItem>
     </Menu>
   );
@@ -59,7 +71,7 @@ export default function AppTopNavigation() {
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
-            User Dashboard
+            {`Hello, ${authData && authData.email}`}
           </Typography>
           <IconButton
             edge="end"

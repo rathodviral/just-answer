@@ -9,7 +9,7 @@ function App() {
   return (
     <AppContextProvider>
       <div className="app">
-        <Container maxWidth="xs" className="app-container">
+        <Container className="app-container">
           <Router>
             <Switch>
               <Route exact path="/">
@@ -18,7 +18,7 @@ function App() {
               <Route exact path="/register">
                 <Login />
               </Route>
-              <Route exact path="/user">
+              <Route path="/user">
                 <User />
               </Route>
             </Switch>

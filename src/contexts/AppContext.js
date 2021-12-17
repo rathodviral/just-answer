@@ -1,10 +1,16 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import { AppConstant } from "../utils";
 
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
   const body = document.querySelector("body");
+
+  const [isSmallScreen, setSmallScreen] = useState(0);
+
+  let resizeWindow = () => {
+    setSmallScreen(window.innerWidth <= 450);
+  };
 
   const initialSnackbarObj = AppConstant.snackbar;
   const initialAlertDialogObj = AppConstant.alertDialog;
@@ -33,6 +39,12 @@ const AppContextProvider = (props) => {
     setAlertDialogStatus(initialAlertDialogObj);
   };
 
+  useEffect(() => {
+    resizeWindow();
+    window.addEventListener("resize", resizeWindow);
+    return () => window.removeEventListener("resize", resizeWindow);
+  }, []);
+
   return (
     <AppContext.Provider
       value={{
@@ -43,6 +55,7 @@ const AppContextProvider = (props) => {
         alertDialogStatus,
         showAlertDialog,
         hideAlertDialog,
+        isSmallScreen,
       }}
     >
       {props.children}

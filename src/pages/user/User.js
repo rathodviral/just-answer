@@ -5,6 +5,8 @@ import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUser, showLoader } from "../../reducers";
 import UserList from "./List";
+import Dashboard from "./Dashboard";
+import AddUser from "./AddUser";
 
 const useStyles = makeStyles({
   root: {
@@ -28,11 +30,17 @@ export default function User() {
   return (
     <React.Fragment>
       <div className={classes.root}>
-        <AppTopNavigation></AppTopNavigation>
+        <AppTopNavigation />
         <div className={classes.dashboard}>
           <Switch>
             <Route exact path={`${path}`}>
+              <Dashboard />
+            </Route>
+            <Route exact path={`${path}/list`}>
               <UserList />
+            </Route>
+            <Route exact path={`${path}/add`}>
+              <AddUser />
             </Route>
           </Switch>
         </div>

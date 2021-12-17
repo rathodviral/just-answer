@@ -11,11 +11,12 @@ import {
 import CloseIcon from "@material-ui/icons/Close";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { AppContext } from "../contexts";
-import { useDispatch } from "react-redux";
-import { fetchUser } from "../reducers";
+import { useDispatch, useSelector } from "react-redux";
+import { showLoader, toggleLoader, userListPageDetail } from "../reducers";
 import { userApi } from "../services";
 import { AppConstant } from "../utils";
-import { AppForm } from ".";
+import { AppForm, AppSpinner } from ".";
+import { updateUserWithCurrentPage } from "../pages/user/User.utils";
 
 const useStyles = makeStyles((theme) => ({
   appBar: {
@@ -36,12 +37,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function AppEditDialog(props) {
   const classes = useStyles();
   const dispatch = useDispatch();
-
+  const { page } = useSelector(userListPageDetail);
   const { showAlertDialog, showSnackbar } = useContext(AppContext);
   const { dialogStatus, toggleDialog, selectedItem } = props;
   const { fields, title, buttonLabel } = AppConstant.user;
   const editTitle = selectedItem ? `${title} ${selectedItem.first_name}` : "";
 
+  const showSpinner = useSelector(showLoader);
   const [formFields, setFormFields] = useState(null);
 
   useEffect(() => {
@@ -58,8 +60,8 @@ export default function AppEditDialog(props) {
 
   const alertDeleteListItem = () => {
     const obj = {
-      title: `Delete ${title}`,
-      message: `Are you sure, you want to delete ${title}.`,
+      title: `Delete ${selectedItem.first_name}`,
+      message: `Are you sure, you want to delete?`,
       agreeBtnText: "Agree",
       disagreeBtnText: "Disagree",
       dialogBtnClick: (isDelete) => {
@@ -72,11 +74,11 @@ export default function AppEditDialog(props) {
   };
 
   const deleteListItem = async () => {
-    const { id } = selectedItem;
-    const { status } = await userApi.delete(id);
+    dispatch(toggleLoader(true));
+    const { status } = await userApi.delete(selectedItem.id);
     if (status) {
       showSnackbar(`Deleted.`);
-      dispatch(fetchUser());
+      updateUserWithCurrentPage(dispatch, page);
       toggleDialog(false);
     } else {
       showSnackbar("Some Issue");
@@ -84,11 +86,15 @@ export default function AppEditDialog(props) {
   };
 
   const formSubmit = async (formData) => {
+    dispatch(toggleLoader(true));
     try {
-      const { status, message } = await userApi.update(formData);
+      const { status, message } = await userApi.update(
+        selectedItem.id,
+        formData
+      );
       if (status) {
-        dispatch(fetchUser());
         showSnackbar(message);
+        updateUserWithCurrentPage(dispatch, page);
       } else {
         // setValues(defaultFields);
         throw message;
@@ -136,6 +142,7 @@ export default function AppEditDialog(props) {
           formSubmit={formSubmit}
         ></AppForm>
       </div>
+      {showSpinner && <AppSpinner />}
     </Dialog>
   );
 }
