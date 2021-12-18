@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import "./components.css";
 import {
-  makeStyles,
   Menu,
   MenuItem,
   AppBar,
@@ -12,22 +12,18 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import { useHistory } from "react-router-dom";
 import { AppConstant, AppStorage } from "../utils";
 
-const useStyles = makeStyles((theme) => ({
-  navigation: {
-    flexGrow: 1,
-  },
-  navigationTitle: {
-    flexGrow: 1,
-    textTransform: "capitalize",
-  },
-}));
-
 export default function AppTopNavigation() {
-  const classes = useStyles();
   const history = useHistory();
   const { login } = AppConstant;
-  const [anchorEl, setAnchorEl] = useState(false);
   const authData = AppStorage.getItemFromStorage(login.storage);
+
+  const menuItem = [
+    { name: "Dashboard", path: "/user/" },
+    { name: "List", path: "/user/list" },
+    { name: "Add user", path: "/user/add" },
+  ];
+
+  const [anchorEl, setAnchorEl] = useState(false);
 
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,12 +38,6 @@ export default function AppTopNavigation() {
     AppStorage.removeItemFromStorage(login.storage);
     history.replace({ pathname: "/" });
   };
-
-  const menuItem = [
-    { name: "Dashboard", path: "/user/" },
-    { name: "List", path: "/user/list" },
-    { name: "Add user", path: "/user/add" },
-  ];
 
   const renderMenu = (
     <Menu
@@ -67,10 +57,13 @@ export default function AppTopNavigation() {
   );
 
   return (
-    <div className={classes.navigation}>
+    <div className="div--flexgrow">
       <AppBar position="fixed">
         <Toolbar>
-          <Typography variant="h6" className={classes.navigationTitle}>
+          <Typography
+            variant="h6"
+            className="div--flexgrow app_text-capitalize"
+          >
             {`Hello, ${authData && authData.email}`}
           </Typography>
           <IconButton

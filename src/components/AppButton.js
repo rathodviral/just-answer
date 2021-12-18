@@ -1,14 +1,8 @@
 import React from "react";
-import { makeStyles, Button } from "@material-ui/core";
-
-const useStyles = makeStyles({
-  button: {
-    marginTop: 16,
-  },
-});
+import { Button } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 export default function AppButton(props) {
-  const classes = useStyles();
   const { type = "button", onClick, children } = props;
 
   return (
@@ -16,7 +10,7 @@ export default function AppButton(props) {
       type={type}
       variant="contained"
       color="primary"
-      className={classes.button}
+      className="app_margin--top-1"
       fullWidth
       onClick={onClick}
     >
@@ -24,3 +18,9 @@ export default function AppButton(props) {
     </Button>
   );
 }
+
+AppButton.prototype = {
+  type: PropTypes.string,
+  onClick: PropTypes.func,
+  children: PropTypes.any,
+};

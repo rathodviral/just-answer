@@ -3,11 +3,12 @@ import { Snackbar, IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { AppContext } from "../contexts";
 
-export default function AppSnackbar(props) {
+export default function AppSnackbar() {
   const {
     snackbarStatus: { isOpen, message, hideDuration = 2000 },
     hideSnackbar,
   } = useContext(AppContext);
+
   return (
     <Snackbar
       anchorOrigin={{

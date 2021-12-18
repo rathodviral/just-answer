@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
 import {
   Select,
   MenuItem,
@@ -8,19 +8,7 @@ import {
   InputLabel,
 } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    width: "100%",
-    marginTop: "16px",
-    marginBottom: "8px",
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
-
 export default function AppSelectField(props) {
-  const classes = useStyles();
   const {
     isDisabled = false,
     isError = false,
@@ -43,7 +31,7 @@ export default function AppSelectField(props) {
   return (
     <FormControl
       variant="outlined"
-      className={classes.formControl}
+      className="FormControl--width app_margin--top-bottom-1"
       disabled={isDisabled}
       error={isError}
       size="small"
@@ -71,3 +59,14 @@ export default function AppSelectField(props) {
     </FormControl>
   );
 }
+AppSelectField.prototype = {
+  isDisabled: PropTypes.bool,
+  isError: PropTypes.bool,
+  name: PropTypes.string,
+  label: PropTypes.string,
+  value: PropTypes.any,
+  handleChange: PropTypes.func,
+  helperText: PropTypes.string,
+  defaultValue: PropTypes.any,
+  options: PropTypes.array,
+};

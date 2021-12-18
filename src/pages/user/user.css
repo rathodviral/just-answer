@@ -1,0 +1,10 @@
+.user_div--width {
+  width: 100%;
+}
+.user_div--margin-top {
+  margin-top: 4.8rem;
+}
+.dashboard_items--center {
+  display: flex;
+  justify-content: center;
+}

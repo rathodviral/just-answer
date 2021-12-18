@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { AppContext } from "../contexts";
 
-export default function AppAlertDialog(props) {
+export default function AppAlertDialog() {
   const {
     alertDialogStatus: {
       isOpen,

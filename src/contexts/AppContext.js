@@ -1,17 +1,10 @@
 import React, { createContext, useEffect, useState } from "react";
-import { AppConstant } from "../utils";
+import { AppConstant, AppStorage } from "../utils";
 
 export const AppContext = createContext();
 
 const AppContextProvider = (props) => {
   const body = document.querySelector("body");
-
-  const [isSmallScreen, setSmallScreen] = useState(0);
-
-  let resizeWindow = () => {
-    setSmallScreen(window.innerWidth <= 450);
-  };
-
   const initialSnackbarObj = AppConstant.snackbar;
   const initialAlertDialogObj = AppConstant.alertDialog;
 
@@ -19,15 +12,17 @@ const AppContextProvider = (props) => {
   const [alertDialogStatus, setAlertDialogStatus] = useState(
     initialAlertDialogObj
   );
+  const [isSmallScreen, setSmallScreen] = useState(0);
+
+  const isUserValid = () =>
+    AppStorage.getItemFromStorage(AppConstant.login.storage);
 
   const showSnackbar = (message) => {
     setSnackbarStatus({ isOpen: true, message });
   };
 
   const hideSnackbar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
+    if (reason === "clickaway") return;
     setSnackbarStatus(initialSnackbarObj);
   };
 
@@ -37,6 +32,10 @@ const AppContextProvider = (props) => {
 
   const hideAlertDialog = (event, reason) => {
     setAlertDialogStatus(initialAlertDialogObj);
+  };
+
+  const resizeWindow = () => {
+    setSmallScreen(window.innerWidth <= 450);
   };
 
   useEffect(() => {
@@ -56,6 +55,7 @@ const AppContextProvider = (props) => {
         showAlertDialog,
         hideAlertDialog,
         isSmallScreen,
+        isUserValid,
       }}
     >
       {props.children}

@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import React, { useContext, useEffect } from "react";
+import "./user.css";
 import { AppSpinner, AppTopNavigation } from "../../components";
 import { Switch, Route, useRouteMatch } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,31 +7,30 @@ import { fetchUser, showLoader } from "../../reducers";
 import UserList from "./List";
 import Dashboard from "./Dashboard";
 import AddUser from "./AddUser";
-
-const useStyles = makeStyles({
-  root: {
-    width: "100%",
-  },
-  dashboard: {
-    marginTop: "4.8rem",
-  },
-});
+import { AppContext } from "../../contexts";
+import { useHistory } from "react-router-dom";
 
 export default function User() {
-  const classes = useStyles();
+  const history = useHistory();
   const { path } = useRouteMatch();
   const dispatch = useDispatch();
   const showSpinner = useSelector(showLoader);
+  const { isUserValid } = useContext(AppContext);
+
   useEffect(() => {
-    dispatch(fetchUser());
+    if (isUserValid()) {
+      dispatch(fetchUser());
+    } else {
+      history.replace({ pathname: "/" });
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <React.Fragment>
-      <div className={classes.root}>
+      <div className="user_div--width">
         <AppTopNavigation />
-        <div className={classes.dashboard}>
+        <div className="user_div--margin-top">
           <Switch>
             <Route exact path={`${path}`}>
               <Dashboard />

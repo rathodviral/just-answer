@@ -21,10 +21,8 @@ export default function Login() {
   const classes = useStyles();
   const history = useHistory();
   const { path } = useRouteMatch();
-  const { showSnackbar } = useContext(AppContext);
-
+  const { showSnackbar, isUserValid } = useContext(AppContext);
   const isRegister = path.includes("register");
-
   const { fields, title, storage, buttonLabel, bottomNote } = isRegister
     ? AppConstant.register
     : AppConstant.login;
@@ -32,8 +30,7 @@ export default function Login() {
   const [formFields, setFormFields] = useState(null);
 
   useEffect(() => {
-    const authData = AppStorage.getItemFromStorage(storage);
-    if (authData && authData.token) {
+    if (isUserValid()) {
       history.replace({ pathname: "/user" });
       return;
     }

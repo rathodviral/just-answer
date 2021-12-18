@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
+import "./components.css";
+import PropTypes from "prop-types";
 import {
-  makeStyles,
   IconButton,
   Typography,
   Slide,
@@ -18,24 +19,11 @@ import { AppConstant } from "../utils";
 import { AppForm, AppSpinner } from ".";
 import { updateUserWithCurrentPage } from "../pages/user/User.utils";
 
-const useStyles = makeStyles((theme) => ({
-  appBar: {
-    position: "relative",
-  },
-  saveButton: {
-    marginLeft: "auto",
-  },
-  title: {
-    textTransform: "capitalize",
-  },
-}));
-
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function AppEditDialog(props) {
-  const classes = useStyles();
   const dispatch = useDispatch();
   const { page } = useSelector(userListPageDetail);
   const { showAlertDialog, showSnackbar, isSmallScreen } =
@@ -123,7 +111,7 @@ export default function AppEditDialog(props) {
   return (
     dialogProps && (
       <Dialog {...dialogProps}>
-        <AppBar className={classes.appBar}>
+        <AppBar className="app_position-relative">
           <Toolbar>
             <IconButton
               edge="start"
@@ -133,11 +121,15 @@ export default function AppEditDialog(props) {
             >
               <CloseIcon />
             </IconButton>
-            <Typography variant="h6" className={classes.title} noWrap={true}>
+            <Typography
+              variant="h6"
+              className="app_text-capitalize"
+              noWrap={true}
+            >
               {editTitle}
             </Typography>
             <IconButton
-              className={classes.saveButton}
+              className="AppBar_margin-left"
               edge="start"
               color="inherit"
               onClick={(e) => alertDeleteListItem()}
@@ -147,7 +139,7 @@ export default function AppEditDialog(props) {
             </IconButton>
           </Toolbar>
         </AppBar>
-        <div style={{ padding: "1rem" }}>
+        <div className="app_padding-1">
           <AppForm
             fields={formFields}
             buttonLabel={buttonLabel}
@@ -159,3 +151,9 @@ export default function AppEditDialog(props) {
     )
   );
 }
+
+AppEditDialog.prototype = {
+  dialogStatus: PropTypes.bool,
+  toggleDialog: PropTypes.func,
+  selectedItem: PropTypes.object,
+};

@@ -1,26 +1,13 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
-
-const useStyles = makeStyles({
-  count: {
-    textAlign: "center",
-    cursor: "pointer",
-    fontWeight: 500,
-  },
-  expense: {
-    color: "#dc3545",
-  },
-  income: {
-    color: "#28a745",
-  },
-});
+import "./components.css";
+import PropTypes from "prop-types";
+import { Typography } from "@material-ui/core";
 
 export default function AppTitleText(props) {
-  const classes = useStyles();
-  const { count, type, onClick } = props;
+  const { count, onClick } = props;
   return (
     <Typography
-      className={`${classes.count} ${classes[type]}`}
+      className="Typography_text--center"
       variant="h3"
       onClick={onClick}
     >
@@ -28,3 +15,7 @@ export default function AppTitleText(props) {
     </Typography>
   );
 }
+AppTitleText.prototype = {
+  count: PropTypes.string,
+  onClick: PropTypes.func,
+};

@@ -6,8 +6,8 @@ export {
   getErrorFields,
   isFormValid,
   getFormValue,
-  getAuthData,
   setInvalidField,
   setValidField,
 } from "./common.js";
 export { default as AppStorage } from "./storage";
+export { default as PrivateRoute } from "./route";

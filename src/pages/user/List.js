@@ -1,44 +1,25 @@
 import React, { useContext, useState } from "react";
-import {
-  Card,
-  CardActionArea,
-  CardContent,
-  CardMedia,
-  Grid,
-  List,
-  makeStyles,
-  Typography,
-} from "@material-ui/core";
+import { Grid, List } from "@material-ui/core";
 import {
   AppCard,
   AppDivider,
   AppEditDialog,
   AppHintText,
   AppListItem,
+  AppUserCard,
 } from "../../components";
 import { useDispatch, useSelector } from "react-redux";
 import { userList, userListPageDetail } from "../../reducers";
 import { Pagination } from "@material-ui/lab";
 import { updateUserWithCurrentPage } from "./User.utils";
 import { AppContext } from "../../contexts";
-
-const useStyles = makeStyles({
-  paginationWrap: {
-    marginTop: "1rem",
-    justifyContent: "center",
-    display: "flex",
-  },
-  gridPadding: {
-    padding: "1rem 0",
-  },
-});
+import { AppConstant } from "../../utils";
 
 export default function UserList(props) {
-  const classes = useStyles();
   const list = useSelector(userList);
   const dispatch = useDispatch();
+  const { title, hint } = AppConstant.list;
   const { isSmallScreen } = useContext(AppContext);
-
   const { total_pages, page } = useSelector(userListPageDetail);
 
   const [openEditItemDialog, setOpenEditItemDialog] = useState(false);
@@ -63,8 +44,8 @@ export default function UserList(props) {
   return (
     <div>
       {isSmallScreen ? (
-        <AppCard title={`User List`}>
-          <AppHintText>(Click to edit user detail)</AppHintText>
+        <AppCard title={title}>
+          <AppHintText>{hint}</AppHintText>
           <AppDivider />
           <List component="div" disablePadding>
             {list.map((item, i) => (
@@ -76,7 +57,7 @@ export default function UserList(props) {
             ))}
           </List>
           {total_pages > 0 && (
-            <div className={classes.paginationWrap}>
+            <div className="app_content--horizontal-center app_margin--top-1">
               <Pagination
                 count={total_pages}
                 shape="rounded"
@@ -85,48 +66,24 @@ export default function UserList(props) {
               />
             </div>
           )}
-          <AppEditDialog
-            dialogStatus={openEditItemDialog}
-            toggleDialog={toggleEditItemDialog}
-            selectedItem={selectedItem}
-          ></AppEditDialog>
         </AppCard>
       ) : (
-        <Grid container spacing={3} className={classes.paginationWrap}>
-          {list.map((userData, i) => {
-            const { first_name, last_name, avatar, email, id } = userData;
+        <Grid
+          container
+          spacing={3}
+          className="app_content--horizontal-center app_margin--top-1"
+        >
+          {list.map((user, i) => {
             return (
               <Grid item lg={2} md={3} key={i}>
-                <Card>
-                  <CardActionArea onClick={() => showEditItemDialog(id)}>
-                    <CardMedia
-                      component="img"
-                      height="140"
-                      image={avatar}
-                      alt={email}
-                    />
-                    <CardContent>
-                      <Typography
-                        noWrap
-                        gutterBottom
-                        variant="h6"
-                        component="div"
-                      >
-                        {`${first_name} ${last_name}`}
-                      </Typography>
-                      <Typography noWrap variant="body2">
-                        {email}
-                      </Typography>
-                    </CardContent>
-                  </CardActionArea>
-                </Card>
+                <AppUserCard {...user} cardClick={showEditItemDialog} />
               </Grid>
             );
           })}
         </Grid>
       )}
       {total_pages > 0 && !isSmallScreen && (
-        <div className={classes.paginationWrap}>
+        <div className="app_content--horizontal-center app_margin--top-1">
           <AppDivider />
           <Pagination
             count={total_pages}

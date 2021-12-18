@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { AppInputField, AppButton } from "../components";
 import {
   AppConstant,
@@ -66,3 +67,10 @@ export default function AppForm(props) {
     </form>
   );
 }
+
+AppForm.prototype = {
+  fields: PropTypes.array,
+  fieldbuttonLabels: PropTypes.string,
+  formSubmit: PropTypes.func,
+  resetOnSubmit: PropTypes.bool,
+};

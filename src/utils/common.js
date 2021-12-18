@@ -1,5 +1,3 @@
-import { AppStorage } from ".";
-
 export const sortByName = (a, b) =>
   a.name > b.name ? 1 : b.name > a.name ? -1 : 0;
 
@@ -46,5 +44,3 @@ export const getFormValue = (sourceFields) => {
   });
   return data;
 };
-
-export const getAuthData = (storage) => AppStorage.getItemFromStorage(storage);

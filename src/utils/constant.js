@@ -38,26 +38,6 @@ const AppConstant = {
     buttonLabel: "Register",
     bottomNote: "Login Here",
     fields: {
-      fullName: {
-        name: "fullName",
-        label: "Full Name",
-        type: "text",
-        helperText: null,
-        isDisabled: false,
-        isError: false,
-        multiline: false,
-        value: "",
-      },
-      contactNumber: {
-        name: "contactNumber",
-        label: "Contact Number",
-        type: "number",
-        helperText: null,
-        isDisabled: false,
-        isError: false,
-        multiline: false,
-        value: "",
-      },
       email: {
         name: "email",
         label: "Email",
@@ -118,6 +98,16 @@ const AppConstant = {
         value: "",
       },
     },
+  },
+  dashboard: {
+    title: "Number of users",
+    hint: "(Click to view user list)",
+    buttonLabel: "Add User",
+  },
+  list: {
+    title: "User List",
+    hint: "(Click to edit user detail)",
+    buttonLabel: "Add User",
   },
   addUser: {
     api: "users",
