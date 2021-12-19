@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import "./user.css";
 import { AppCard, AppForm, AppSpinner } from "../../components";
 import { AppContext } from "../../contexts";
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +33,7 @@ export default function AddUser(props) {
   };
 
   return (
-    <div>
+    <div className="dashboard_items--center">
       <AppCard title={title}>
         {fields && (
           <AppForm

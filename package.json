@@ -2,6 +2,7 @@
   "name": "just-answer-fe-demo",
   "version": "0.1.0",
   "private": true,
+  "author": "Viral Rathod (rvdrathod.viral1989@gmail.com)",
   "dependencies": {
     "@date-io/moment": "^1.3.13",
     "@material-ui/core": "^4.11.4",

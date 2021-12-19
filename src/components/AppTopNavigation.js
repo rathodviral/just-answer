@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import AccountCircle from "@material-ui/icons/AccountCircle";
+import ChevronLeft from "@material-ui/icons/ChevronLeft";
 import { useHistory } from "react-router-dom";
 import { AppConstant, AppStorage } from "../utils";
 
@@ -31,12 +32,16 @@ export default function AppTopNavigation() {
 
   const handleMenuClose = (page) => {
     setAnchorEl(null);
-    history.replace({ pathname: page });
+    if (typeof page === "string") history.replace({ pathname: page });
   };
 
   const handleLogoutClick = (event) => {
     AppStorage.removeItemFromStorage(login.storage);
     history.replace({ pathname: "/" });
+  };
+
+  const handleBackClick = (event) => {
+    history.goBack();
   };
 
   const renderMenu = (
@@ -60,6 +65,15 @@ export default function AppTopNavigation() {
     <div className="div--flexgrow">
       <AppBar position="fixed">
         <Toolbar>
+          <IconButton
+            edge="start"
+            aria-label="back navigation"
+            aria-haspopup="false"
+            onClick={handleBackClick}
+            color="inherit"
+          >
+            <ChevronLeft />
+          </IconButton>
           <Typography
             variant="h6"
             className="div--flexgrow app_text-capitalize"
