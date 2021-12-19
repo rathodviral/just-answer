@@ -26,7 +26,8 @@ export default function AppForm(props) {
     setFormFields({ ...formFields, [name]: field });
   };
 
-  const formSubmitEvent = async () => {
+  const formSubmitEvent = async (e) => {
+    e.preventDefault();
     try {
       const formValue = getFormValue(formFields);
       if (isFormValid(formValue)) {
@@ -63,7 +64,9 @@ export default function AppForm(props) {
             );
           }
         })}
-      <AppButton onClick={formSubmitEvent}>{buttonLabel}</AppButton>
+      <AppButton onClick={formSubmitEvent} type="submit">
+        {buttonLabel}
+      </AppButton>
     </form>
   );
 }
